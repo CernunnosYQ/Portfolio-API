@@ -1,5 +1,5 @@
 from db.base import Base
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Text
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 
@@ -10,6 +10,7 @@ class User(Base):
     password = Column(String, nullable=False)
     username = Column(String, nullable=False, unique=True, index=True)
     avatar = Column(String, nullable=True)
+    description = Column(Text, nullable=False)
     date_joined = Column(DateTime, nullable=False, default=func.now())
     last_update = Column(DateTime, nullable=False, onupdate=func.now())
     is_superuser = Column(Boolean(), default=False)
