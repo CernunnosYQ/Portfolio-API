@@ -1,0 +1,30 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+  - id: trailing-whitespace
+  - id: end-of-file-fixer
+  - id: check-yaml
+  - id: check-added-large-files
+
+- repo: https://github.com/psf/black
+  rev: 23.12.1
+  hooks:
+    - id: black
+
+- repo: https://github.com/pycqa/flake8.git
+  rev: 7.0.0
+  hooks:
+    - id: flake8
+
+- repo: local
+  hooks:
+  - id: commit-msg
+    name: conventional commit messages
+    language: pygrep
+    entry: '^(build|feat|fix|docs|refactor|test)\((core|routes|db|schemas)\): ((?!.*(ing))(?!.*(ed))).*$'
+    args:
+    - --multiline
+    - --negate # fails if the entry is NOT matched
+    stages:
+    - commit-msg
