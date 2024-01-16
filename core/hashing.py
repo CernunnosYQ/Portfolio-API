@@ -6,7 +6,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 class Hasher:
     @staticmethod
     def hash_password(plain_password):
-        return pwd_context.encrypt(plain_password)
+        return pwd_context.hash(plain_password)
 
     @staticmethod
     def verify_password(plain_password, hashed_password):
