@@ -1,8 +1,6 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from typing import List, Optional
 
-from db import Project
-
 
 class CreateUser(BaseModel):
     username: str = Field(..., min_length=4)
@@ -17,4 +15,4 @@ class ShowUser(BaseModel):
     email: str
     avatar: Optional[str] = None
     description: Optional[str] = None
-    projects: List[Project]
+    projects: List
