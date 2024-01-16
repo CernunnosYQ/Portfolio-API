@@ -10,6 +10,8 @@ def create_new_user(user: CreateUser, db: Session):
         username=user.username,
         email=user.email,
         password=Hasher().hash_password(user.password),
+        avatar="",
+        description="",
         is_active=True,
         is_superuser=False,
     )

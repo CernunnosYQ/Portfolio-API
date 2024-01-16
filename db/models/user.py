@@ -12,7 +12,9 @@ class User(Base):
     avatar = Column(String, nullable=True)
     description = Column(Text, nullable=False)
     date_joined = Column(DateTime, nullable=False, default=func.now())
-    last_update = Column(DateTime, nullable=False, onupdate=func.now())
+    last_update = Column(
+        DateTime, nullable=False, default=func.now(), onupdate=func.now()
+    )
     is_superuser = Column(Boolean(), default=False)
     is_active = Column(Boolean(), default=True)
     blogs = relationship("Blogpost", back_populates="author")
