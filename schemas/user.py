@@ -8,11 +8,15 @@ class UserCreate(BaseModel):
     password: str = Field(..., min_length=8)
 
 
-class UserShow(BaseModel):
+class UserShowPublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     username: str
     email: str
     avatar: Optional[str] = None
     description: Optional[str] = None
-    projects: List
+    projects: Optional[List] | None
+
+
+class UserShowPrivate(UserShowPublic):
+    pass

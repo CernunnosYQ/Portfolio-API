@@ -1,10 +1,11 @@
-def test_create_user(client):
-    data = {
-        "username": "testuser",
-        "email": "testuser@test.com",
-        "password": "TestUser123456",
-    }
+data = {
+    "username": "testuser",
+    "email": "testuser@test.com",
+    "password": "TestUser123456",
+}
 
+
+def test_create_user(client):
     response = client.post("/v1/users", json=data)
     assert response.status_code == 201
 
@@ -12,3 +13,23 @@ def test_create_user(client):
     assert response_data["email"] == data["email"]
     assert response_data["username"] == data["username"]
     assert response_data["is_active"]
+
+
+def test_get_by_email(client):
+    client.post("/v1/users", json=data)
+    response = client.get(f"/v1/user/{data['email']}")
+    assert response.status_code == 200
+
+    response_data = response.json()
+    assert response_data["email"] == data["email"]
+    assert response_data["username"] == data["username"]
+
+
+def test_get_by_username(client):
+    client.post("/v1/users", json=data)
+    response = client.get(f"/v1/user/{data['username']}")
+    assert response.status_code == 200
+
+    response_data = response.json()
+    assert response_data["email"] == data["email"]
+    assert response_data["username"] == data["username"]
