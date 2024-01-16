@@ -22,7 +22,7 @@ repos:
   - id: commit-msg
     name: conventional commit messages
     language: pygrep
-    entry: '^(build|feat|fix|docs|refactor|test)\((core|routes|db|schemas)\): ((?!.*(ing))(?!.*(ed))).*$'
+    entry: '^(build|feat|fix|docs|refactor|test|ci)\((core|routes|db|schemas|test)\): ((?!.*(ing))(?!.*(ed))).*$'
     args:
     - --multiline
     - --negate # fails if the entry is NOT matched
