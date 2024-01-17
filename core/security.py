@@ -16,7 +16,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     token = encode(
         payload={**data, "exp": expire},
         key=settings.SECRET_KEY,
-        algorithm=(settings.ALGORITHM),
+        algorithm=(settings.JWT_ALGORITHM),
     )
     return token.encode("UTF-8")
 
@@ -24,7 +24,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 def validate_access_token(token):
     try:
         decoded_token = decode(
-            token, key=settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            token, key=settings.SECRET_KEY, algorithms=[settings.JWT_ALGORITHM]
         )
         return {"success": True, "payload": decoded_token}
     except exceptions.DecodeError:
