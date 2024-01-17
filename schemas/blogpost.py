@@ -1,15 +1,15 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, root_validator
 from typing import Optional, List
 
 
-class CreateBlog(BaseModel):
-    title: str = str
-    slug: str = str
+class BlogCreate(BaseModel):
+    title: str
+    slug: str
     content: Optional[str] = None
     tags: Optional[List[str]] = None
 
-    @model_validator(mode="before")
+    @root_validator(pre=True)
     @classmethod
     def check_slug(cls, values):
         if "title" in values:
@@ -17,7 +17,7 @@ class CreateBlog(BaseModel):
         return values
 
 
-class ShowBlog(BaseModel):
+class BlogShow(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     title: str
