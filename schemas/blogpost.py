@@ -1,5 +1,5 @@
 from datetime import datetime
-from pydantic import BaseModel, ConfigDict, root_validator
+from pydantic import BaseModel, ConfigDict, model_validator
 from typing import Optional, List
 
 
@@ -9,7 +9,7 @@ class BlogCreate(BaseModel):
     content: Optional[str] = None
     tags: Optional[List[str]] = None
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
     @classmethod
     def check_slug(cls, values):
         if "title" in values:

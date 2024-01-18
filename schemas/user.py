@@ -15,7 +15,7 @@ class UserShowPublic(BaseModel):
     email: str
     avatar: Optional[str] = None
     description: Optional[str] = None
-    projects: Optional[List] | None
+    projects: Optional[List] = None
 
 
 class UserShowPrivate(UserShowPublic):
