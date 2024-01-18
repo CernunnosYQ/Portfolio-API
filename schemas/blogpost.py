@@ -23,3 +23,7 @@ class BlogShow(BaseModel):
     title: str
     content: Optional[str]
     created_at: datetime
+
+
+class BlogUpdate(BlogCreate):
+    pass

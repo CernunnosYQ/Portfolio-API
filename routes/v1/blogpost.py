@@ -1,9 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from schemas.blogpost import BlogCreate, BlogShow
+from schemas.blogpost import BlogCreate, BlogShow, BlogUpdate
 from sqlalchemy.orm import Session
 
 from db.session import get_db
-from db.crud.blogpost import create_new_blogpost, get_blogpost_by_id
+from db.crud.blogpost import (
+    create_new_blogpost,
+    get_blogpost_by_id,
+    update_blogpost_by_id,
+)
 from db.models.user import User
 
 from routes.v1.auth import get_current_user
@@ -30,3 +34,18 @@ def get_blogpost(id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND,
         )
     return BlogShow(**blogpost.__dict__)
+
+
+@router.put("/blogs/{id}", status_code=status.HTTP_200_OK)
+def update_blogpost(
+    id: int,
+    blog: BlogUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    blogpost = update_blogpost_by_id(id=id, blog=blog, db=db, author_id=current_user.id)
+    if isinstance(blogpost, dict):
+        raise HTTPException(
+            detail=blogpost.get("detail"), status_code=status.HTTP_404_NOT_FOUND
+        )
+    return blogpost
