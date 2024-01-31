@@ -12,6 +12,9 @@ def test_get_blogpost(client, db_session):
 
     blogpost = create_bp_response.json()
 
+    not_found_response = client.get("/v1/blogs/99999")
+    assert not_found_response.status_code == 404
+
     get_bp_response = client.get(f"/v1/blogs/{blogpost['id']}")
     assert get_bp_response.status_code == 200
 
@@ -27,6 +30,17 @@ def test_update_blogpost(client, db_session):
     ).json()
 
     new_data = {"title": "This is my new title", "content": "This is my new content"}
+
+    not_found_response = client.put(
+        "/v1/blogs/99999", json=new_data, headers={"Authorization": f"Bearer {token}"}
+    )
+    assert not_found_response.status_code == 404
+
+    unauthorized_response = client.put(
+        "/v1/blogs/99999", json=new_data, headers={"Authorization": "Bearer bad token"}
+    )
+    assert unauthorized_response.status_code == 400
+
     update_response = client.put(
         f"/v1/blogs/{old_post.get('id')}",
         json=new_data,
@@ -45,6 +59,11 @@ def test_delete_blog(client, db_session):
     post = client.post(
         "/v1/blogs", json=data, headers={"Authorization": f"Bearer {token}"}
     ).json()
+
+    not_found_response = client.delete(
+        "/v1/blogs/99999", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert not_found_response.status_code == 404
 
     delete_response = client.delete(
         f"/v1/blogs/{post.get('id')}", headers={"Authorization": f"Bearer {token}"}
