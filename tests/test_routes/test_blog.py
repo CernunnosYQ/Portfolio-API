@@ -32,5 +32,24 @@ def test_update_blogpost(client, db_session):
         json=new_data,
         headers={"Authorization": f"Bearer {token}"},
     )
-
     assert update_response.status_code == 200
+
+    response_data = update_response.json()
+    assert response_data["title"] == new_data["title"]
+    assert response_data["title"] != old_post["title"]
+    assert response_data["content"] != old_post["content"]
+
+
+def test_delete_blog(client, db_session):
+    _, token = create_test_user(db=db_session)
+    post = client.post(
+        "/v1/blogs", json=data, headers={"Authorization": f"Bearer {token}"}
+    ).json()
+
+    delete_response = client.delete(
+        f"/v1/blogs/{post.get('id')}", headers={"Authorization": f"Bearer {token}"}
+    )
+    assert delete_response.status_code == 200
+
+    response_data = delete_response.json()
+    assert response_data["message"]

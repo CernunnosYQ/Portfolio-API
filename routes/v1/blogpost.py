@@ -49,7 +49,7 @@ def update_blogpost(
         raise HTTPException(
             detail=blogpost.get("detail"), status_code=status.HTTP_404_NOT_FOUND
         )
-    return blogpost
+    return BlogShow(**blogpost.__dict__)
 
 
 @router.delete("/blogs/{id}", status_code=status.HTTP_200_OK)

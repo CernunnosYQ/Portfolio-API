@@ -28,14 +28,15 @@ def update_blogpost_by_id(id: int, blog: BlogUpdate, db: Session, author_id: int
     blog_in_db.tags = blog.tags
     db.add(blog_in_db)
     db.commit()
+    db.refresh(blog_in_db)
     return blog_in_db
 
 
 def delete_blogpost_by_id(id: int, db: Session, author_id: int):
-    blog_in_db = db.query(Blogpost).filter(Blogpost.id == id).first()
-    if not blog_in_db:
+    blog_in_db = db.query(Blogpost).filter(Blogpost.id == id)
+    if not blog_in_db.first():
         return {"detail": f"Blogpost with id {id} does not exist"}
-    if blog_in_db.author_id != author_id:
+    if blog_in_db.first().author_id != author_id:
         return {"detail": "You are trying to delete someone else's post"}
     blog_in_db.delete()
     db.commit()
