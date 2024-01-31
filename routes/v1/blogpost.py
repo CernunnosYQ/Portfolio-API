@@ -7,6 +7,7 @@ from db.crud.blogpost import (
     create_new_blogpost,
     get_blogpost_by_id,
     update_blogpost_by_id,
+    delete_blogpost_by_id,
 )
 from db.models.user import User
 
@@ -49,3 +50,17 @@ def update_blogpost(
             detail=blogpost.get("detail"), status_code=status.HTTP_404_NOT_FOUND
         )
     return blogpost
+
+
+@router.delete("/blogs/{id}", status_code=status.HTTP_200_OK)
+def delete_blogpost(
+    id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    message = delete_blogpost_by_id(id=id, db=db, author_id=current_user.id)
+    if not message.get("success"):
+        raise HTTPException(
+            detail=message.get("detail"), status_code=status.HTTP_404_NOT_FOUND
+        )
+    return {"message": f"Successfully deleted blog with id {id}"}
