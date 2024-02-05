@@ -25,5 +25,7 @@ class Project(Base):
     repository = Column(String, nullable=True)
     container = Column(String, nullable=True)
     tags = Column(ARRAY(String), nullable=True)
-    updated_at = Column(DateTime, onupdate=func.now(), nullable=False)
+    updated_at = Column(
+        DateTime, default=func.now(), onupdate=func.now(), nullable=False
+    )
     is_active = Column(Boolean, default=False)
