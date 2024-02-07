@@ -6,7 +6,7 @@ from typing import List
 from db.session import get_db
 from db.crud.blogpost import (
     create_new_blogpost,
-    get_blogpost_by_id,
+    get_blogpost_by_slug,
     get_blogpost_all,
     update_blogpost_by_id,
     delete_blogpost_by_id,
@@ -34,12 +34,12 @@ def create_blogpost(
     return blogpost
 
 
-@router.get("/get/blog/{id}", response_model=BlogShow)
-def get_blogpost(id: int, db: Session = Depends(get_db)):
-    blogpost = get_blogpost_by_id(id=id, db=db)
+@router.get("/get/blog/{slug}", response_model=BlogShow)
+def get_blogpost(slug: str, db: Session = Depends(get_db)):
+    blogpost = get_blogpost_by_slug(slug=slug, db=db)
     if not blogpost:
         raise HTTPException(
-            detail=f"Blogpost with ID {id} does not exist.",
+            detail="Blogpost does not exist.",
             status_code=status.HTTP_404_NOT_FOUND,
         )
     return BlogShow(**blogpost.__dict__)

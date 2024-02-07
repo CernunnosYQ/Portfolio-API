@@ -17,6 +17,11 @@ def get_blogpost_by_id(id: int, db: Session):
     return blogpost
 
 
+def get_blogpost_by_slug(slug: int, db: Session):
+    blogpost = db.query(Blogpost).filter(Blogpost.slug == slug).first()
+    return blogpost
+
+
 def get_blogpost_all(db: Session):
     all_blogpost = db.query(Blogpost).all()
     return all_blogpost

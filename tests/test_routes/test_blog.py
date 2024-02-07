@@ -15,7 +15,7 @@ def test_get_blogpost(client, db_session):
     not_found_response = client.get("/v1/get/blog/99999")
     assert not_found_response.status_code == 404
 
-    get_bp_response = client.get(f"/v1/get/blog/{blogpost['id']}")
+    get_bp_response = client.get(f"/v1/get/blog/{blogpost['slug']}")
     assert get_bp_response.status_code == 200
 
     response_data = get_bp_response.json()
