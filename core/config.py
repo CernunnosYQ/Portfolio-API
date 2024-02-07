@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 
 from pathlib import Path
@@ -21,6 +22,8 @@ class Settings:
     SECRET_KEY: str = os.getenv("SECRET_KEY")
     JWT_ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
+    CORS_ORIGINS: list[str] = json.loads(os.getenv("CORS_ORIGINS"))
 
 
 settings = Settings()
