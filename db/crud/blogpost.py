@@ -17,6 +17,11 @@ def get_blogpost_by_id(id: int, db: Session):
     return blogpost
 
 
+def get_blogpost_all(db: Session):
+    all_blogpost = db.query(Blogpost).all()
+    return all_blogpost
+
+
 def update_blogpost_by_id(id: int, blog: BlogUpdate, db: Session, author_id: int):
     blog_in_db = db.query(Blogpost).filter(Blogpost.id == id).first()
     if not blog_in_db:

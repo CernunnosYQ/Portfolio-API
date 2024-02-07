@@ -16,7 +16,7 @@ from routes.v1.auth import get_current_user
 router = APIRouter()
 
 
-@router.post("/projects", status_code=status.HTTP_201_CREATED)
+@router.post("/create/project", status_code=status.HTTP_201_CREATED)
 def create_project(
     project: ProjectCreate,
     db: Session = Depends(get_db),
@@ -26,7 +26,7 @@ def create_project(
     return project
 
 
-@router.get("/project/{id}", response_model=ProjectShow)
+@router.get("/get/project/{id}", response_model=ProjectShow)
 def get_project(
     id: int,
     db: Session = Depends(get_db),
@@ -40,7 +40,7 @@ def get_project(
     return ProjectShow(**project.__dict__)
 
 
-@router.put("/project/{id}", response_model=ProjectShow)
+@router.put("/update/project/{id}", response_model=ProjectShow)
 def update_project(
     id: int,
     project: ProjectUpdate,
@@ -57,7 +57,7 @@ def update_project(
     return ProjectShow(**project.__dict__)
 
 
-@router.delete("/project/{id}", status_code=status.HTTP_200_OK)
+@router.delete("/delete/project/{id}", status_code=status.HTTP_200_OK)
 def delete_blogpost(
     id: int,
     db: Session = Depends(get_db),

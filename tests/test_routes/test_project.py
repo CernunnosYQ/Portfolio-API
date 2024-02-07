@@ -6,12 +6,14 @@ data = {"title": "Portfolio", "description": "New portfolio API"}
 def test_get_project(client, db_session):
     _, token = create_test_user(db=db_session)
     create_project_response = client.post(
-        "/v1/projects", json=data, headers={"Authorization": f"Bearer {token}"}
+        "/v1/create/project", json=data, headers={"Authorization": f"Bearer {token}"}
     )
     assert create_project_response.status_code == 201
 
     create_response_data = create_project_response.json()
-    get_project_response = client.get(f"/v1/project/{create_response_data.get('id')}")
+    get_project_response = client.get(
+        f"/v1/get/project/{create_response_data.get('id')}"
+    )
     assert get_project_response.status_code == 200
     assert data["title"] == get_project_response.json().get("title")
 
@@ -19,7 +21,7 @@ def test_get_project(client, db_session):
 def test_update_project(client, db_session):
     _, token = create_test_user(db=db_session)
     old_project = client.post(
-        "/v1/projects", json=data, headers={"Authorization": f"Bearer {token}"}
+        "/v1/create/project", json=data, headers={"Authorization": f"Bearer {token}"}
     ).json()
 
     new_data = {
@@ -28,19 +30,21 @@ def test_update_project(client, db_session):
     }
 
     not_found_response = client.put(
-        "/v1/project/99999", json=new_data, headers={"Authorization": f"Bearer {token}"}
+        "/v1/update/project/99999",
+        json=new_data,
+        headers={"Authorization": f"Bearer {token}"},
     )
     assert not_found_response.status_code == 404
 
     unauthorized_response = client.put(
-        "/v1/project/99999",
+        "/v1/update/project/99999",
         json=new_data,
         headers={"Authorization": "Bearer bad token"},
     )
     assert unauthorized_response.status_code == 400
 
     update_response = client.put(
-        f"/v1/project/{old_project.get('id')}",
+        f"/v1/update/project/{old_project.get('id')}",
         json=new_data,
         headers={"Authorization": f"Bearer {token}"},
     )
@@ -55,16 +59,17 @@ def test_update_project(client, db_session):
 def test_delete_project(client, db_session):
     _, token = create_test_user(db=db_session)
     project = client.post(
-        "/v1/projects", json=data, headers={"Authorization": f"Bearer {token}"}
+        "/v1/create/project", json=data, headers={"Authorization": f"Bearer {token}"}
     ).json()
 
     not_found_response = client.delete(
-        "/v1/project/99999", headers={"Authorization": f"Bearer {token}"}
+        "/v1/delete/project/99999", headers={"Authorization": f"Bearer {token}"}
     )
     assert not_found_response.status_code == 404
 
     delete_response = client.delete(
-        f"/v1/project/{project.get('id')}", headers={"Authorization": f"Bearer {token}"}
+        f"/v1/delete/project/{project.get('id')}",
+        headers={"Authorization": f"Bearer {token}"},
     )
     assert delete_response.status_code == 200
 

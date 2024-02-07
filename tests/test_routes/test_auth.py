@@ -20,7 +20,7 @@ def test_create_token(db_session):
 def test_email_login(client, db_session):
     user, _ = create_test_user(db_session, data=data)
     response = client.post(
-        "/v1/token", data={"username": user.email, "password": data["password"]}
+        "/v1/create/token", data={"username": user.email, "password": data["password"]}
     )
     assert response.status_code == 200
 
@@ -33,7 +33,8 @@ def test_email_login(client, db_session):
 def test_username_login(client, db_session):
     user, _ = create_test_user(db_session, data=data)
     response = client.post(
-        "/v1/token", data={"username": user.username, "password": data["password"]}
+        "/v1/create/token",
+        data={"username": user.username, "password": data["password"]},
     )
     assert response.status_code == 200
 

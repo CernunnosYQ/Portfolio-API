@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from schemas.blogpost import BlogCreate, BlogShow, BlogUpdate
 from sqlalchemy.orm import Session
+from typing import List
 
 from db.session import get_db
 from db.crud.blogpost import (
     create_new_blogpost,
     get_blogpost_by_id,
+    get_blogpost_all,
     update_blogpost_by_id,
     delete_blogpost_by_id,
 )
@@ -16,7 +18,13 @@ from routes.v1.auth import get_current_user
 router = APIRouter()
 
 
-@router.post("/blogs", status_code=status.HTTP_201_CREATED)
+@router.get("/get/blog/all", response_model=List[BlogShow])
+def get_all(db: Session = Depends(get_db)):
+    all_blogpost = get_blogpost_all(db)
+    return all_blogpost
+
+
+@router.post("/create/blog", status_code=status.HTTP_201_CREATED)
 def create_blogpost(
     blog: BlogCreate,
     db: Session = Depends(get_db),
@@ -26,7 +34,7 @@ def create_blogpost(
     return blogpost
 
 
-@router.get("/blogs/{id}", response_model=BlogShow)
+@router.get("/get/blog/{id}", response_model=BlogShow)
 def get_blogpost(id: int, db: Session = Depends(get_db)):
     blogpost = get_blogpost_by_id(id=id, db=db)
     if not blogpost:
@@ -37,7 +45,7 @@ def get_blogpost(id: int, db: Session = Depends(get_db)):
     return BlogShow(**blogpost.__dict__)
 
 
-@router.put("/blogs/{id}", status_code=status.HTTP_200_OK)
+@router.put("/update/blog/{id}", status_code=status.HTTP_200_OK)
 def update_blogpost(
     id: int,
     blog: BlogUpdate,
@@ -52,7 +60,7 @@ def update_blogpost(
     return BlogShow(**blogpost.__dict__)
 
 
-@router.delete("/blogs/{id}", status_code=status.HTTP_200_OK)
+@router.delete("/delete/blog/{id}", status_code=status.HTTP_200_OK)
 def delete_blogpost(
     id: int,
     db: Session = Depends(get_db),

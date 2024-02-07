@@ -6,7 +6,7 @@ data = {
 
 
 def test_create_user(client):
-    response = client.post("/v1/users", json=data)
+    response = client.post("/v1/create/user", json=data)
     assert response.status_code == 201
 
     response_data = response.json()
@@ -16,8 +16,8 @@ def test_create_user(client):
 
 
 def test_get_by_email(client):
-    client.post("/v1/users", json=data)
-    response = client.get(f"/v1/user/{data['email']}")
+    client.post("/v1/create/user", json=data)
+    response = client.get(f"/v1/get/user/{data['email']}")
     assert response.status_code == 200
 
     response_data = response.json()
@@ -26,8 +26,8 @@ def test_get_by_email(client):
 
 
 def test_get_by_username(client):
-    client.post("/v1/users", json=data)
-    response = client.get(f"/v1/user/{data['username']}")
+    client.post("/v1/create/user", json=data)
+    response = client.get(f"/v1/get/user/{data['username']}")
     assert response.status_code == 200
 
     response_data = response.json()

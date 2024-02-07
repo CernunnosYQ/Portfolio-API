@@ -23,7 +23,7 @@ def authenticate_user(email: str, password: str, db: Session):
     return user
 
 
-@router.post("/token", status_code=status.HTTP_200_OK)
+@router.post("/create/token", status_code=status.HTTP_200_OK)
 def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ):
