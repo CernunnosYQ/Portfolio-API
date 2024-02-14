@@ -25,3 +25,17 @@ class Blogpost(Base):
     created_at = Column(DateTime, default=func.now(), nullable=False)
     project = relationship("Project", uselist=False, back_populates="blog")
     is_active = Column(Boolean, default=False)
+
+
+class BlogpostTest(Base):
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False, index=True)
+    slug = Column(String, unique=True, nullable=False, index=True)
+    banner = Column(String, nullable=True)
+    content = Column(Text, nullable=False)
+    author_id = Column(Integer, ForeignKey("userstests.id"))
+    author = relationship("UserTest", back_populates="blogs")
+    tags = Column(ARRAY(String), nullable=True)
+    created_at = Column(DateTime, default=func.now(), nullable=False)
+    project = relationship("ProjectTest", uselist=False, back_populates="blog")
+    is_active = Column(Boolean, default=False)

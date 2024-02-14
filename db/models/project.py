@@ -29,3 +29,21 @@ class Project(Base):
         DateTime, default=func.now(), onupdate=func.now(), nullable=False
     )
     is_active = Column(Boolean, default=False)
+
+
+class ProjectTest(Base):
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False, index=True)
+    description = Column(Text, nullable=False)
+    banner = Column(String, nullable=True)
+    author_id = Column(Integer, ForeignKey("usertests.id"))
+    author = relationship("UserTest", back_populates="projects")
+    blog_id = Column(Integer, ForeignKey("blogposttests.id"))
+    blog = relationship("BlogpostTest", back_populates="project")
+    repository = Column(String, nullable=True)
+    container = Column(String, nullable=True)
+    tags = Column(ARRAY(String), nullable=True)
+    updated_at = Column(
+        DateTime, default=func.now(), onupdate=func.now(), nullable=False
+    )
+    is_active = Column(Boolean, default=False)
